@@ -1,0 +1,8 @@
+
+# Keep secrets and generated reports out of Git
+.env
+results.csv
+results.xlsx
+__pycache__/
+.venv/
+venv/
