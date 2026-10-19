@@ -1,5 +1,7 @@
 # SOC IOC Checker 🔎
+### SOC Dashboard Preview
 
+![SOC IOC Checker Dashboard](screenshots/soc-dashboard.png)
 A Python-based Security Operations Center (SOC) automation project that checks Indicators of Compromise (IOCs) using the VirusTotal API and generates an Excel report for security analysis.
 
 ## 🚀 Features
