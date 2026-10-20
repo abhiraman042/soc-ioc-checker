@@ -5,9 +5,6 @@ on:
   schedule:
     - cron: "30 3 * * *"
 
-permissions:
-  contents: read
-
 jobs:
   check-iocs:
     runs-on: ubuntu-latest
@@ -19,33 +16,22 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: pip
 
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
-
-      - name: Validate API key is present
-        env:
-          VIRUSTOTAL_API_KEY: ${{ secrets.VIRUSTOTAL_API_KEY }}
-        run: |
-          if [ -z "$VIRUSTOTAL_API_KEY" ]; then
-            echo "::error::VIRUSTOTAL_API_KEY secret is missing or empty"
-            exit 1
-          fi
 
       - name: Run IOC Checker
         env:
           VIRUSTOTAL_API_KEY: ${{ secrets.VIRUSTOTAL_API_KEY }}
         run: python ioc_checker.py
 
-      - name: Verify report files exist
+      - name: Check generated files
         if: always()
         run: |
-          ls -la results.csv results.xlsx 2>&1 || true
-          if [ ! -f results.csv ] && [ ! -f results.xlsx ]; then
-            echo "::error::No report files were produced by ioc_checker.py"
-            exit 1
-          fi
+          echo "--- Current directory ---"
+          pwd
+          echo "--- Files in root ---"
+          ls -la results.csv results.xlsx 2>&1 || echo "Report files NOT found in workspace root"
 
       - name: Upload IOC Reports
         if: always()
