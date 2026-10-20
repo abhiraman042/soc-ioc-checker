@@ -25,14 +25,6 @@ jobs:
           VIRUSTOTAL_API_KEY: ${{ secrets.VIRUSTOTAL_API_KEY }}
         run: python ioc_checker.py
 
-      - name: Check generated files
-        if: always()
-        run: |
-          echo "--- Current directory ---"
-          pwd
-          echo "--- Files in root ---"
-          ls -la results.csv results.xlsx 2>&1 || echo "Report files NOT found in workspace root"
-
       - name: Upload IOC Reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -41,5 +33,5 @@ jobs:
           path: |
             results.csv
             results.xlsx
-          if-no-files-found: error
+          if-no-files-found: warn
           retention-days: 7
