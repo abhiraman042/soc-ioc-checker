@@ -26,3 +26,13 @@ jobs:
         env:
           VIRUSTOTAL_API_KEY: ${{ secrets.VIRUSTOTAL_API_KEY }}
         run: python ioc_checker.py
+              - name: Upload IOC Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: soc-ioc-reports
+          path: |
+            results.csv
+            results.xlsx
+          if-no-files-found: warn
+          retention-days: 7
